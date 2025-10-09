@@ -1,4 +1,5 @@
 'use client'
+
 import {AddToFridge,DisplayItems,Greeting} from "@/components/organisms";
 
 export default function Home() {
