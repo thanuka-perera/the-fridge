@@ -1,8 +1,9 @@
 import { Trash2 } from 'lucide-react';
-import Button from '../atoms/Button';
+import {Button} from '@/components/atoms';
 import { DeleteConfirmProps } from '@/util/interfaces/fridge'
+import {FC} from 'react'
 
-export default function DeleteConfirmDialog({ item, onCancel, onConfirm, loading }: DeleteConfirmProps) {
+export const DeleteConfirmDialog:FC<DeleteConfirmProps>=({ item, onCancel, onConfirm, loading }: DeleteConfirmProps) => {
     return (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50">
             <div className="bg-white rounded-2xl shadow-lg w-96 p-6 relative">

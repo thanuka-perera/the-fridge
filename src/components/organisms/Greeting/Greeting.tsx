@@ -1,6 +1,7 @@
 'use client'
+import {FC} from 'react'
 
-export default function Greeting() {
+export const Greeting:FC=() =>{
 
     return (
         <div className="flex flex-col text-center items-center justify-center space-y-3 w-lg">

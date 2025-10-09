@@ -13,15 +13,16 @@ export const getItemStatus = (expiryDateStr: string) => {
     if (expiryDateStr.includes("-")) {
 
         expiryDate = new Date(expiryDateStr);
-    } else if (expiryDateStr.includes("/")) {
+    } 
+    else if (expiryDateStr.includes("/")) {
 
         const parts = expiryDateStr.split("/").map(Number);
         if (parts[0] > 31) {
 
-            expiryDate = new Date(parts[0], parts[1] - 1, parts[2]);
+            expiryDate = new Date(parts[0], parts[1] , parts[2]);
         } else {
 
-            expiryDate = new Date(parts[2], parts[1] - 1, parts[0]);
+            expiryDate = new Date(parts[2], parts[1] , parts[0]);
         }
     }
 
@@ -44,20 +45,33 @@ export const getItemStatus = (expiryDateStr: string) => {
     if (expiryDate < today) {
         return {
             label: 'Expired',
-            labelClasses: 'bg-red-100 text-red-700',
+            labelClasses: 'bg-[#FFEBEB] text-[#752B2B]',
             iconColor: 'text-red-500'
         };
     }
     if (expiryDate < oneMonthFromNow) {
         return {
             label: 'Expiring soon',
-            labelClasses: 'bg-yellow-100 text-yellow-700',
+            labelClasses: 'bg-[#FFFDCC] text-[#754311]',
             iconColor: 'text-yellow-500'
         };
     }
     return {
         label: 'Healthy',
-        labelClasses: 'bg-green-100 text-green-700',
+        labelClasses: 'bg-[#DBFFE6] text-[#23553E]',
         iconColor: 'text-gray-600'
     };
 };
+
+export   const isValidDateFormat = (dateStr: string) => {
+    const regex = /^\d{4}\/\d{2}\/\d{2}$/;
+    if (!regex.test(dateStr)) return false;
+
+    const [year, month, day] = dateStr.split('/').map(Number);
+    const date = new Date(year, month - 1, day);
+    return (
+      date.getFullYear() === year &&
+      date.getMonth() === month - 1 &&
+      date.getDate() === day
+    );
+  };

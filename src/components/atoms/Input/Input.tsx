@@ -1,6 +1,7 @@
 import {InputProps} from '@/util/interfaces/fridge'
+import {FC} from 'react'
 
-export default function Input({label,emoji,name,type="text",placeholder,value,onChange ,className}:InputProps){
+export const Input:FC<InputProps>=({label,emoji,name,type="text",placeholder,value,onChange ,className}:InputProps)=>{
     return(
         <div className="flex flex-col space-y-1 w-full">
             <label className="text-[#003A59] font-semibold flex items-center gap-1">

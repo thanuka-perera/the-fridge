@@ -1,13 +1,14 @@
 'use client'
-import Loading from '../atoms/Loading';
-import ItemComponent from '../atoms/Item';
+
+import { ItemComponent, Loading } from '@/components/atoms';
 import { useFridge } from '@/context/FridgeContext';
 import { useState } from 'react'
-import DeleteConfirmDialog from './DeleteConfirmDialog';
+import { DeleteConfirmDialog, ItemForm } from '@/components/molecules';
 import { Item } from '@/util/interfaces/fridge'
-import ItemForm from '../molecules/ItemForm';
+import { FC } from 'react'
 
-export default function DisplayItems() {
+
+export const DisplayItems: FC = () => {
     const { items, loading, error, deleteItem } = useFridge();
     const [deleteItemData, setDeleteItemData] = useState<Item | null>(null);
     const [isDeleting, setIsDeleting] = useState(false);
@@ -31,7 +32,7 @@ export default function DisplayItems() {
 
     return (
         <div className="w-full grid grid-cols-1  space-y-1">
-            
+
             <div className="font-semibold px-3 py-4 grid justify-end items-center">Total items- {items.length}</div>
             {items.map(item => (
                 <ItemComponent key={item._id} item={item} onDelete={() => setDeleteItemData(item)} onClick={() => setEditItem(item)} />

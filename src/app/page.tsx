@@ -1,7 +1,5 @@
 'use client'
-import AddToFridge from "@/components/organisms/AddToFridge";
-import DisplayItems from "@/components/organisms/DisplayItems";
-import Greeting from "@/components/organisms/Greeting";
+import {AddToFridge,DisplayItems,Greeting} from "@/components/organisms";
 
 export default function Home() {
 
