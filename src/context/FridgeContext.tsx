@@ -1,8 +1,9 @@
 'use client';
 import { createContext, useContext, useEffect, useState } from 'react';
 import { Item, AddItem, FridgeContextType } from "@/util/interfaces/fridge"
-import { fetchItems,saveItem,removeItem,updateItem2 } from '@/util/api/Api';
-import {toast} from 'sonner'
+import { fetchItems, saveItem, removeItem, updateItem2 } from '@/util/api/Api';
+import { toast } from 'sonner'
+import { FC } from 'react'
 
 
 const FridgeContext = createContext<FridgeContextType>({
@@ -12,15 +13,13 @@ const FridgeContext = createContext<FridgeContextType>({
   refreshFridge: () => { },
   addItem: async () => { },
   deleteItem: async () => { },
-  updateItem:async () =>{}
+  updateItem: async () => { }
 });
 
-export function FridgeProvider({ children }: { children: React.ReactNode }) {
+export const FridgeProvider: FC<{ children: React.ReactNode }> = ({ children }: { children: React.ReactNode }) => {
   const [items, setItems] = useState<Item[]>([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string>('')
-
-
 
   const getItems = async () => {
     try {
@@ -39,10 +38,6 @@ export function FridgeProvider({ children }: { children: React.ReactNode }) {
     }
 
   }
-
-  useEffect(() => {
-    getItems();
-  }, []);
 
   const addItem = async (item: AddItem) => {
     try {
@@ -77,7 +72,7 @@ export function FridgeProvider({ children }: { children: React.ReactNode }) {
   const updateItem = async (itemId: string, updatedItem: AddItem) => {
     try {
       setLoading(true);
-      await updateItem2(itemId,updatedItem);
+      await updateItem2(itemId, updatedItem);
       toast.success(`${updatedItem.title} updated successfully`);
       await getItems();
     } catch (err) {
@@ -89,15 +84,18 @@ export function FridgeProvider({ children }: { children: React.ReactNode }) {
     }
   }
 
+  useEffect(() => {
+    getItems();
+  }, []);
 
   return (
-    <FridgeContext.Provider value={{ items, loading, error, refreshFridge: getItems, addItem, deleteItem,updateItem }}>
+    <FridgeContext.Provider value={{ items, loading, error, refreshFridge: getItems, addItem, deleteItem, updateItem }}>
       {children}
     </FridgeContext.Provider>
   );
 }
 
-export function useFridge() {
+export const useFridge = (): FridgeContextType => {  
   const context = useContext(FridgeContext);
   if (!context) throw new Error('useFridge must be used within FridgeProvider');
   return context;
