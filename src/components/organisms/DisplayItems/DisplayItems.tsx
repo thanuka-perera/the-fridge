@@ -1,15 +1,15 @@
 'use client'
 
-import { ItemComponent, Loading } from '@/components/atoms';
-import { useFridge } from '@/context/FridgeContext';
+import { ItemComponent, Loading } from '@/components';
+import { useFridge } from '@/context/Context';
 import { useState } from 'react'
-import { DeleteConfirmDialog, ItemForm } from '@/components/molecules';
-import { Item } from '@/util/interfaces/fridge'
+import { DeleteConfirmDialog, ItemForm } from '@/components';
+import { Item } from '@/util'
 import { FC } from 'react'
 
 
 export const DisplayItems: FC = () => {
-    const { items, loading, error, deleteItem } = useFridge();
+    const { items, loading, deleteItem } = useFridge();
     const [deleteItemData, setDeleteItemData] = useState<Item | null>(null);
     const [isDeleting, setIsDeleting] = useState(false);
     const [editItem, setEditItem] = useState<Item | null>(null);
@@ -28,29 +28,38 @@ export const DisplayItems: FC = () => {
     };
 
     if (loading) return <Loading />
-    if (error) return <div className="text-red-500 text-center">{error}</div>;
-
+    
     return (
         <div className="w-full grid grid-cols-1  space-y-1">
 
-            <div className="font-semibold px-3 py-4 grid justify-end items-center">Total items- {items.length}</div>
+            <div className="font-semibold px-3 py-4 grid justify-end items-center">
+                Total items- {items.length}
+            </div>
+
             {items.map(item => (
-                <ItemComponent key={item._id} item={item} onDelete={() => setDeleteItemData(item)} onClick={() => setEditItem(item)} />
+                <ItemComponent 
+                    key={item._id} 
+                    itemDetails={item} 
+                    onDelete={() => setDeleteItemData(item)} 
+                    onClick={() => setEditItem(item)} 
+                />
             ))}
 
             {deleteItemData && (
                 <DeleteConfirmDialog
-                    item={deleteItemData}
+                    itemToDelete={deleteItemData}
                     onCancel={() => setDeleteItemData(null)}
                     onConfirm={handleDelete}
                 />
             )}
+
             {editItem && (
                 <ItemForm
                     itemToEdit={editItem}
                     onClose={() => setEditItem(null)}
                 />
             )}
+
         </div>
     )
 }

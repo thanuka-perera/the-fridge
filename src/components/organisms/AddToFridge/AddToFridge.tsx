@@ -1,22 +1,22 @@
 'use client'
+
 import { TriangleAlert } from 'lucide-react';
 import { useState } from 'react'
-import {Button,Input} from '@/components/atoms'
-import { formData } from '@/util/interfaces/fridge'
-import { useFridge } from '@/context/FridgeContext';
-import { toast } from 'sonner'; 
-import { isValidDateFormat } from '@/util/functions/item';
-import {FC} from 'react'
+import { Button, CustomInput } from '@/components'
+import { FormData } from '@/util'
+import { useFridge } from '@/context/Context';
+import { isValidDateFormat } from '@/util';
+import { FC } from 'react'
 
-export const AddToFridge:FC=()=> {
-  const { addItem } = useFridge();
-  const [formData, setFormData] = useState<formData>({ itemName: "", expiryDate: "" })
-  const [error, setError] = useState<string>("");
+export const AddToFridge: FC = () => {
+  const { addItem, error, setError } = useFridge();
+  const [formData, setFormData] = useState<FormData>({ itemName: "", expiryDate: "" })
+
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
-    setError(""); 
+    setError("");
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -40,40 +40,46 @@ export const AddToFridge:FC=()=> {
       return;
     }
 
-    try {
-      await addItem({
-        title: formData.itemName,
-        expiry: formData.expiryDate,
-      });
+    setFormData({ itemName: '', expiryDate: '' });
 
-      setFormData({ itemName: '', expiryDate: '' });
-      setError("");
-      toast.success("Item added successfully!");
-    } catch {
-      toast.error("Failed to add item.");
-    }
+    await addItem({
+      title: formData.itemName,
+      expiry: formData.expiryDate,
+    });
+
+    setError("");
   };
 
   return (
     <div className="flex flex-col items-center w-full">
-      <form onSubmit={handleSubmit} className="w-full bg-white border border-[#E3E9F1] rounded-lg shadow-sm p-6 flex flex-col gap-4">
+      <form onSubmit={handleSubmit}
+        className="w-full bg-white border border-[#E3E9F1] rounded-lg shadow-sm p-6 flex flex-col gap-4"
+      >
         <div className="flex flex-wrap items-end sm:justify-between justify-center gap-4">
-          <div className="flex-1 w-[240px] max-w-sm">
-            <Input label="Item Name" emoji="🍉" name="itemName" placeholder="Enter item name" value={formData.itemName} onChange={handleChange} />
-          </div>
 
           <div className="flex-1 w-[240px] max-w-sm">
-            <Input
-              label="Expiry Date"
-              emoji="⏰"
-              name="expiryDate"
-              placeholder="YYYY/MM/DD"
-              value={formData.expiryDate}
+            <CustomInput
+              inputLabel="Item Name"
+              inputEmoji="🍉"
+              inputName="itemName"
+              inputPlaceholder="Enter item name"
+              inputValue={formData.itemName}
               onChange={handleChange}
             />
           </div>
 
-          <Button className="text-white text-md" text='ADD TO FRIDGE' />
+          <div className="flex-1 w-[240px] max-w-sm">
+            <CustomInput
+              inputLabel="Expiry Date"
+              inputEmoji="⏰"
+              inputName="expiryDate"
+              inputPlaceholder="YYYY/MM/DD"
+              inputValue={formData.expiryDate}
+              onChange={handleChange}
+            />
+          </div>
+
+          <Button className="text-white text-md" buttonText='ADD TO FRIDGE' />
         </div>
 
         {error && (

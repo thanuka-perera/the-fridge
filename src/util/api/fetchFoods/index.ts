@@ -1,0 +1,1 @@
+export { fetchFoods } from './fetchFoods'

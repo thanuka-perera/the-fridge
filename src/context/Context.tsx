@@ -1,7 +1,8 @@
 'use client';
+
 import { createContext, useContext, useEffect, useState } from 'react';
-import { Item, AddItem, FridgeContextType } from "@/util/interfaces/fridge"
-import { fetchItems, saveItem, removeItem, updateItem2 } from '@/util/api/Api';
+import { Item, AddItem, FridgeContextType } from "@/util"
+import { fetchFoods, saveFood, deleteFood, updateFood } from '@/util/api';
 import { toast } from 'sonner'
 import { FC } from 'react'
 
@@ -10,6 +11,7 @@ const FridgeContext = createContext<FridgeContextType>({
   items: [],
   loading: false,
   error: '',
+  setError:()=>{},
   refreshFridge: () => { },
   addItem: async () => { },
   deleteItem: async () => { },
@@ -24,7 +26,7 @@ export const FridgeProvider: FC<{ children: React.ReactNode }> = ({ children }: 
   const getItems = async () => {
     try {
       setLoading(true);
-      const data = await fetchItems();
+      const data = await fetchFoods();
       setItems(data);
       setError("");
     }
@@ -42,8 +44,8 @@ export const FridgeProvider: FC<{ children: React.ReactNode }> = ({ children }: 
   const addItem = async (item: AddItem) => {
     try {
       setLoading(true);
-      await saveItem(item);
-      toast.success(`${item.title} Item added to Fridge`)
+      await saveFood(item);
+      toast.success(`${item.title} added to Fridge`)
       await getItems();
     } catch (error) {
       console.error("Add item error:", error);
@@ -57,7 +59,7 @@ export const FridgeProvider: FC<{ children: React.ReactNode }> = ({ children }: 
   const deleteItem = async (itemId: string) => {
     try {
       setLoading(true);
-      await removeItem(itemId);
+      await deleteFood(itemId);
       toast.success("Item deleted successfully");
       await getItems();
     } catch (error) {
@@ -72,7 +74,7 @@ export const FridgeProvider: FC<{ children: React.ReactNode }> = ({ children }: 
   const updateItem = async (itemId: string, updatedItem: AddItem) => {
     try {
       setLoading(true);
-      await updateItem2(itemId, updatedItem);
+      await updateFood(itemId, updatedItem);
       toast.success(`${updatedItem.title} updated successfully`);
       await getItems();
     } catch (err) {
@@ -89,7 +91,7 @@ export const FridgeProvider: FC<{ children: React.ReactNode }> = ({ children }: 
   }, []);
 
   return (
-    <FridgeContext.Provider value={{ items, loading, error, refreshFridge: getItems, addItem, deleteItem, updateItem }}>
+    <FridgeContext.Provider value={{ items, loading, error,setError, refreshFridge: getItems, addItem, deleteItem, updateItem }}>
       {children}
     </FridgeContext.Provider>
   );

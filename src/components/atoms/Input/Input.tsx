@@ -1,14 +1,38 @@
-import {InputProps} from '@/util/interfaces/fridge'
-import {FC} from 'react'
+import { CustomInputProps } from '@/util'
+import { FC } from 'react'
 
-export const Input:FC<InputProps>=({label,emoji,name,type="text",placeholder,value,onChange ,className}:InputProps)=>{
+export const CustomInput:FC<CustomInputProps>=({
+    classname,
+    inputEmoji,
+    inputLabel,
+    inputName,
+    onChange,
+    inputPlaceholder,
+    inputType="text",
+    inputValue,
+}: CustomInputProps )=>{
+
     return(
+
         <div className="flex flex-col space-y-1 w-full">
+
             <label className="text-[#003A59] font-semibold flex items-center gap-1">
-                <span className="text-lg">{emoji}</span>
-                {label}
+                <span className="text-lg">
+                    {inputEmoji}
+                </span>
+
+                {inputLabel}
             </label>
-            <input placeholder={placeholder} type={type} name ={name} value={value} onChange={onChange} className={`border border-gray-300 rounded-[4px] p-2 w-full focus:outline-none focus:ring-2 focus:ring-[#003A59] ${className}`}/>
+
+            <input 
+                placeholder={inputPlaceholder} 
+                type={inputType} 
+                name ={inputName} 
+                value={inputValue} 
+                onChange={onChange} 
+                className={`border border-gray-300 rounded-[4px] p-2 w-full focus:outline-none focus:ring-2 focus:ring-[#003A59] ${classname}`}
+            />
+
         </div>
     )
 }

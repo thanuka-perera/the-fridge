@@ -1,1 +1,1 @@
-export {DisplayItems} from './DisplayItems'
+export { DisplayItems } from './DisplayItems'

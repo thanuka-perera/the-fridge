@@ -1,0 +1,1 @@
+export { deleteFood } from './deleteFood'
