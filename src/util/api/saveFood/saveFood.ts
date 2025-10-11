@@ -1,4 +1,4 @@
-import { AddItem } from "../../interfaces/props/itemFormProps/itemFormProps";
+import { AddItem } from "@/util";
 
 const baseUrl = process.env.NEXT_PUBLIC_BASE_URL
 

@@ -1,4 +1,4 @@
-import { AddItem } from "@/util/interfaces/props/itemFormProps/itemFormProps";
+import { AddItem } from "@/util";
 
 export async function updateFood(itemId:string,updatedItem: AddItem){
   const res=await fetch(`https://thefridge-api.karapincha.io/fridge/${itemId}`, {
