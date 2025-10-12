@@ -2,21 +2,21 @@ export const getFoodStatus = (expiryDateStr: string) => {
 
     if (!expiryDateStr) {
         return {
-            label: "Unknown",
-            labelClasses: "bg-gray-100 text-gray-500",
-            iconColor: "text-gray-400",
+            label: 'Unknown',
+            labelClasses: 'bg-gray-100 text-gray-500',
+            iconColor: 'text-gray-400',
         };
     }
 
     let expiryDate: Date | null = null;
 
-    if (expiryDateStr.includes("-")) {
+    if (expiryDateStr.includes('-')) {
 
         expiryDate = new Date(expiryDateStr);
     } 
-    else if (expiryDateStr.includes("/")) {
+    else if (expiryDateStr.includes('/')) {
 
-        const parts = expiryDateStr.split("/").map(Number);
+        const parts = expiryDateStr.split('/').map(Number);
         if (parts[0] > 31) {
 
             expiryDate = new Date(parts[0], parts[1] , parts[2]);
@@ -28,9 +28,9 @@ export const getFoodStatus = (expiryDateStr: string) => {
 
     if (!expiryDate || isNaN(expiryDate.getTime())) {
         return {
-            label: "Invalid date",
-            labelClasses: "bg-gray-200 text-gray-600",
-            iconColor: "text-gray-500",
+            label: 'Invalid date',
+            labelClasses: 'bg-gray-200 text-gray-600',
+            iconColor: 'text-gray-500',
         };
     }
 

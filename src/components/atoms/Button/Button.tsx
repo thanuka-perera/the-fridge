@@ -1,4 +1,4 @@
-import { ButtonProps } from "@/util"
+import { ButtonProps } from '@/util'
 import { FC } from 'react'
 
 export const Button:FC<ButtonProps>=({

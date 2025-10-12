@@ -8,16 +8,16 @@ export const CustomInput:FC<CustomInputProps>=({
     inputName,
     onChange,
     inputPlaceholder,
-    inputType="text",
+    inputType='text',
     inputValue,
 }: CustomInputProps )=>{
 
     return(
 
-        <div className="flex flex-col space-y-1 w-full">
+        <div className='flex flex-col space-y-1 w-full'>
 
-            <label className="text-[#003A59] font-semibold flex items-center gap-1">
-                <span className="text-lg">
+            <label className='text-[#003A59] font-semibold flex items-center gap-1'>
+                <span className='text-lg'>
                     {inputEmoji}
                 </span>
 

@@ -1,7 +1,7 @@
 'use client';
 
 import { createContext, useContext, useEffect, useState } from 'react';
-import { Item, AddItem, FridgeContextType,fetchFoods, saveFood, deleteFood, updateFood } from "@/util"
+import { Item, AddItem, FridgeContextType,fetchFoods, saveFood, deleteFood, updateFood } from '@/util'
 import { toast } from 'sonner'
 import { FC } from 'react'
 
@@ -27,12 +27,12 @@ export const FridgeProvider: FC<{ children: React.ReactNode }> = ({ children }: 
       setLoading(true);
       const data = await fetchFoods();
       setItems(data);
-      setError("");
+      setError('');
     }
     catch (error) {
-      setError("Failed to load items. Please try again later.");
+      setError('Failed to load items. Please try again later.');
       toast.error('Failed to load fridge items');
-      console.error("Failed to fetch items: ", error)
+      console.error('Failed to fetch items: ', error)
     }
     finally {
       setLoading(false)
@@ -47,9 +47,9 @@ export const FridgeProvider: FC<{ children: React.ReactNode }> = ({ children }: 
       toast.success(`${item.title} added to Fridge`)
       await getItems();
     } catch (error) {
-      console.error("Add item error:", error);
+      console.error('Add item error:', error);
       toast.error(`Error adding ${item.title}`)
-      setError("Failed to add item.");
+      setError('Failed to add item.');
     } finally {
       setLoading(false);
     }
@@ -59,12 +59,12 @@ export const FridgeProvider: FC<{ children: React.ReactNode }> = ({ children }: 
     try {
       setLoading(true);
       await deleteFood(itemId);
-      toast.success("Item deleted successfully");
+      toast.success('Item deleted successfully');
       await getItems();
     } catch (error) {
-      console.error("Failed to delete item:", error);
-      toast.error("Error deleting Item")
-      setError("Failed to delete item.");
+      console.error('Failed to delete item:', error);
+      toast.error('Error deleting Item')
+      setError('Failed to delete item.');
     } finally {
       setLoading(false);
     }
@@ -77,9 +77,9 @@ export const FridgeProvider: FC<{ children: React.ReactNode }> = ({ children }: 
       toast.success(`${updatedItem.title} updated successfully`);
       await getItems();
     } catch (err) {
-      console.error("Update item error:", err);
+      console.error('Update item error:', err);
       toast.error(`Failed to update ${updatedItem.title}`)
-      setError("Failed to update item");
+      setError('Failed to update item');
     } finally {
       setLoading(false);
     }

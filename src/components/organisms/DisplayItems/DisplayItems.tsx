@@ -19,7 +19,7 @@ export const DisplayItems: FC = () => {
             await deleteItem(deleteItemData._id!);
             setDeleteItemData(null);
         } catch (err) {
-            console.error("Delete failed:", err);
+            console.error('Delete failed:', err);
         } finally {
             setIsDeleting(false);
         }
@@ -28,9 +28,9 @@ export const DisplayItems: FC = () => {
     if (loading) return <Loading />
     
     return (
-        <div className="w-full grid grid-cols-1  space-y-1">
+        <div className='w-full grid grid-cols-1  space-y-1'>
 
-            <div className="font-semibold px-3 py-4 grid justify-end items-center">
+            <div className='font-semibold px-3 py-4 grid justify-end items-center'>
                 Total items- {items.length}
             </div>
 

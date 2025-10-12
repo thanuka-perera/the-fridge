@@ -1,8 +1,8 @@
-import { AddItem } from "@/util";
+import { AddItem } from '@/util';
 
 export async function updateFood(itemId:string,updatedItem: AddItem){
 
-  const res=await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}${itemId}`, {
+  const res=await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}fridge/${itemId}`, {
 
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
@@ -10,6 +10,6 @@ export async function updateFood(itemId:string,updatedItem: AddItem){
 
       });
 
-      if (!res.ok) throw new Error("Failed to update item");
-      
+      if (!res.ok) throw new Error('Failed to update item');
+
 }

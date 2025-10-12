@@ -1,6 +1,6 @@
 export async function deleteFood(itemId: string) {
 
-  const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}${itemId}`, {
+  const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}fridge/${itemId}`, {
     method: 'DELETE',
   });
 

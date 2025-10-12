@@ -1,4 +1,4 @@
-import { AddItem } from "@/util";
+import { AddItem } from '@/util';
 
 export async function saveFood(item: AddItem) {
 
@@ -10,6 +10,6 @@ export async function saveFood(item: AddItem) {
 
   });
 
-  if (!res.ok) throw new Error("Failed to add item");
+  if (!res.ok) throw new Error('Failed to add item');
 
 }

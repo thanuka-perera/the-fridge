@@ -26,12 +26,12 @@ export const ItemForm: FC<ItemFormProps> = ({ itemToEdit, onClose }: ItemFormPro
     e.preventDefault();
 
     if (!title || !expiry) {
-      setError("Both fields are required.");
+      setError('Both fields are required.');
       return;
     }
 
     if (!isValidDateFormat(expiry)) {
-      setError("Expiry date must be in YYYY/MM/DD format.Please check whether the given date is valid");
+      setError('Expiry date must be in YYYY/MM/DD format.Please check whether the given date is valid');
       return;
     }
 
@@ -39,7 +39,7 @@ export const ItemForm: FC<ItemFormProps> = ({ itemToEdit, onClose }: ItemFormPro
     const today = new Date();
     today.setHours(0, 0, 0, 0);
     if (enteredDate < today) {
-      setError("Expiry date cannot be in the past.");
+      setError('Expiry date cannot be in the past.');
       return;
     }
     const data: AddItem = { title, expiry };
@@ -52,53 +52,53 @@ export const ItemForm: FC<ItemFormProps> = ({ itemToEdit, onClose }: ItemFormPro
   }
 
   return (
-    <div className="fixed inset-0 flex items-center justify-center bg-black/50">
-      <div className="bg-white rounded-2xl shadow-lg w-96 p-6 relative">
-        <div className="flex flex-col justify-center items-center gap-4">
+    <div className='fixed inset-0 flex items-center justify-center bg-black/50'>
+      <div className='bg-white rounded-2xl shadow-lg w-96 p-6 relative'>
+        <div className='flex flex-col justify-center items-center gap-4'>
 
           <Replace
             size={40}
-            className="text-[#005B8F]"
+            className='text-[#005B8F]'
           />
 
-          <h2 className="text-lg font-bold text-gray-800">
+          <h2 className='text-lg font-bold text-gray-800'>
             Update &quot;{title}&quot;?
           </h2>
 
-          <form onSubmit={handleSubmit} className="space-y-2">
+          <form onSubmit={handleSubmit} className='space-y-2'>
 
             <CustomInput
-              inputType="text"
+              inputType='text'
               inputValue={title}
               onChange={e => setTitle(e.target.value)}
-              inputPlaceholder="Item title"
-              classname="w-full border px-2 py-1"
+              inputPlaceholder='Item title'
+              classname='w-full border px-2 py-1'
             />
 
             <CustomInput
-              inputType="text"
+              inputType='text'
               inputValue={expiry}
               onChange={e => setExpiry(e.target.value)}
-              inputPlaceholder="Expiry (DD/MM/YYYY)"
-              classname="w-full border px-2 py-1"
+              inputPlaceholder='Expiry (DD/MM/YYYY)'
+              classname='w-full border px-2 py-1'
             />
 
             {error && (
-              <div className="text-red-500 text-sm flex items-center sm:justify-start justify-center gap-1 p-1">
+              <div className='text-red-500 text-sm flex items-center sm:justify-start justify-center gap-1 p-1'>
                 {error}
               </div>
             )}
 
-            <div className="flex items-center justify-center gap-6 mt-4">
+            <div className='flex items-center justify-center gap-6 mt-4'>
 
               <Button
-                buttonText="Cancel"
+                buttonText='Cancel'
                 onClick={onClose}
-                className="flex-1 border border-gray-300 bg-white text-gray-700 hover:bg-gray-50 cursor-pointer"
+                className='flex-1 border border-gray-300 bg-white text-gray-700 hover:bg-gray-50 cursor-pointer'
               />
 
               <Button
-                className="text-white"
+                className='text-white'
                 buttonText={`Update ${title}`}
               />
               
