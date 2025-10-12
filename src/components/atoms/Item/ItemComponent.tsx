@@ -1,7 +1,6 @@
 import { Trash } from 'lucide-react';
-import { ItemProps } from '@/util'
-import { useFridge } from '@/context/Context';
-import { getFoodStatus } from '@/util' 
+import { ItemProps, getFoodStatus } from '@/util'
+import { useFridge } from '@/context';
 import { FC } from 'react'
 
 

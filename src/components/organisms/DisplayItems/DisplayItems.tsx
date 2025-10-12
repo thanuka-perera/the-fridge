@@ -1,11 +1,9 @@
 'use client'
 
-import { ItemComponent, Loading } from '@/components';
-import { useFridge } from '@/context/Context';
-import { useState } from 'react'
-import { DeleteConfirmDialog, ItemForm } from '@/components';
+import { ItemComponent, Loading, DeleteConfirmDialog, ItemForm } from '@/components';
+import { useFridge } from '@/context';
 import { Item } from '@/util'
-import { FC } from 'react'
+import { FC ,useState } from 'react'
 
 
 export const DisplayItems: FC = () => {

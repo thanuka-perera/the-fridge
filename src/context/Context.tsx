@@ -1,8 +1,7 @@
 'use client';
 
 import { createContext, useContext, useEffect, useState } from 'react';
-import { Item, AddItem, FridgeContextType } from "@/util"
-import { fetchFoods, saveFood, deleteFood, updateFood } from '@/util/api';
+import { Item, AddItem, FridgeContextType,fetchFoods, saveFood, deleteFood, updateFood } from "@/util"
 import { toast } from 'sonner'
 import { FC } from 'react'
 

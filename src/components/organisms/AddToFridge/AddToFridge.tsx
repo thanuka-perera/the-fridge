@@ -3,14 +3,13 @@
 import { TriangleAlert } from 'lucide-react';
 import { useState } from 'react'
 import { Button, CustomInput } from '@/components'
-import { FormData } from '@/util'
-import { useFridge } from '@/context/Context';
-import { isValidDateFormat } from '@/util';
+import { FormData, isValidDateFormat } from '@/util'
+import { useFridge } from '@/context';
 import { FC } from 'react'
 
 export const AddToFridge: FC = () => {
   const { addItem, error, setError } = useFridge();
-  const [formData, setFormData] = useState<FormData>({ itemName: "", expiryDate: "" })
+  const [formData, setFormData] = useState<FormData>({ itemName: '', expiryDate: '' })
 
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {

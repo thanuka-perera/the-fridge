@@ -1,5 +1,3 @@
-'use client'
-
 import { AddToFridge,DisplayItems,Greeting } from "@/components";
 
 export default function Home() {
