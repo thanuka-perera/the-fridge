@@ -1,18 +1,18 @@
 import { CustomInputProps } from '@/util'
 import { FC } from 'react'
 
-export const CustomInput:FC<CustomInputProps>=({
+export const CustomInput: FC<CustomInputProps> = ({
     classname,
     inputEmoji,
     inputLabel,
     inputName,
-    onChange,
     inputPlaceholder,
-    inputType='text',
+    inputType = 'text',
     inputValue,
-}: CustomInputProps )=>{
+    onChange,
+}: CustomInputProps) => {
 
-    return(
+    return (
 
         <div className='flex flex-col space-y-1 w-full'>
 
@@ -24,13 +24,13 @@ export const CustomInput:FC<CustomInputProps>=({
                 {inputLabel}
             </label>
 
-            <input 
-                placeholder={inputPlaceholder} 
-                type={inputType} 
-                name ={inputName} 
-                value={inputValue} 
-                onChange={onChange} 
+            <input
                 className={`border border-gray-300 rounded-[4px] p-2 w-full focus:outline-none focus:ring-2 focus:ring-[#003A59] ${classname}`}
+                name={inputName}
+                onChange={onChange}
+                placeholder={inputPlaceholder}
+                type={inputType}
+                value={inputValue}
             />
 
         </div>
