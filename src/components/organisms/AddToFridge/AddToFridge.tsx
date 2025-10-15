@@ -78,7 +78,7 @@ export const AddToFridge: FC = () => {
             />
           </div>
 
-          <Button className='text-white text-md' buttonText='ADD TO FRIDGE' />
+          <Button classname='text-white text-md' buttonText='ADD TO FRIDGE' />
         </div>
 
         {error && (

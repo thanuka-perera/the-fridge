@@ -1,4 +1,4 @@
-export type { AddItem } from './addItem.interface'
-export type { FridgeContextType } from './contextType.interface'
-export type { FormData } from './formData.interface'
-export type { Item } from './item.interface'
+export type { AddItem } from './addItemTypes'
+export type { FridgeContextType } from './contextType'
+export type { FormData } from './formDataTypes'
+export type { Item } from './itemType'

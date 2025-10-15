@@ -1,6 +1,6 @@
 export interface ButtonProps{
     buttonText:string;
-    className?:string
+    classname?:string
     disabled?:boolean
     onClick?:()=>void;
 }

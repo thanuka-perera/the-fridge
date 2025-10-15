@@ -1,5 +1,6 @@
 import { CustomInputProps } from '@/util'
 import { FC } from 'react'
+import  CN  from 'classnames'
 
 export const CustomInput: FC<CustomInputProps> = ({
     classname,
@@ -25,7 +26,7 @@ export const CustomInput: FC<CustomInputProps> = ({
             </label>
 
             <input
-                className={`border border-gray-300 rounded-[4px] p-2 w-full focus:outline-none focus:ring-2 focus:ring-[#003A59] ${classname}`}
+                className={CN('border border-gray-300 rounded-[4px] p-2 w-full focus:outline-none focus:ring-2 focus:ring-[#003A59]', classname)}
                 name={inputName}
                 onChange={onChange}
                 placeholder={inputPlaceholder}

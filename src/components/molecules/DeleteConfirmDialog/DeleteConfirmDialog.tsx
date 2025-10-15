@@ -32,13 +32,13 @@ export const DeleteConfirmDialog:FC<ConfirmDeleteProps>=({
                         <Button
                             buttonText='Cancel'
                             onClick={onCancel}
-                            className='flex-1 border border-gray-300 bg-white text-gray-700 hover:bg-gray-50'
+                            classname='flex-1 border border-gray-300 bg-white text-gray-700 hover:bg-gray-50'
                         />
 
                         <Button
                             buttonText={loading ? 'Deleting...' : 'Delete'}
                             onClick={onConfirm}
-                            className={`flex-1 bg-red-500 text-white hover:bg-red-600 ${loading ? 'opacity-50 cursor-not-allowed' : ''}`}
+                            classname={`flex-1 bg-red-500 text-white hover:bg-red-600 ${loading ? 'opacity-50 cursor-not-allowed' : ''}`}
                         />
 
                     </div>

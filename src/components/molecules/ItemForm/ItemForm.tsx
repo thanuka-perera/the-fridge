@@ -94,11 +94,11 @@ export const ItemForm: FC<ItemFormProps> = ({ itemToEdit, onClose }: ItemFormPro
               <Button
                 buttonText='Cancel'
                 onClick={onClose}
-                className='flex-1 border border-gray-300 bg-white text-gray-700 hover:bg-gray-50 cursor-pointer'
+                classname='flex-1 border border-gray-300 bg-white text-gray-700 hover:bg-gray-50 cursor-pointer'
               />
 
               <Button
-                className='text-white'
+                classname='text-white'
                 buttonText={`Update ${title}`}
               />
               
