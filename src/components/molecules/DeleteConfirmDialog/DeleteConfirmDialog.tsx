@@ -1,14 +1,28 @@
-import { Trash2 } from 'lucide-react';
+'use client'
+
 import { Button } from '@/components';
 import { ConfirmDeleteProps } from '@/util'
-import { FC } from 'react'
+import { FC, useState } from 'react'
+import { Loader,Trash2 } from 'lucide-react'
 
-export const DeleteConfirmDialog:FC<ConfirmDeleteProps>=({ 
-    itemToDelete, 
-    loading ,
-    onCancel, 
-    onConfirm, 
+export const DeleteConfirmDialog: FC<ConfirmDeleteProps> = ({
+    itemToDelete,
+    onCancel,
+    onConfirm,
+    onClose,
 }: ConfirmDeleteProps) => {
+
+    const [loading, setLoading] = useState<boolean>(false);
+
+    const handleDelete = async (e: React.FormEvent) => {
+        e.preventDefault();
+    
+          setLoading(true);
+          await onConfirm();
+          setLoading(false);
+        
+        onClose();
+      }
 
     return (
 
@@ -16,9 +30,9 @@ export const DeleteConfirmDialog:FC<ConfirmDeleteProps>=({
 
             <div className='bg-white rounded-2xl shadow-lg w-96 p-6 relative'>
                 <div className='flex flex-col items-center gap-4'>
-                    <Trash2 
-                        className='text-red-500' 
-                        size={36} 
+                    <Trash2
+                        className='text-red-500'
+                        size={36}
                     />
                     <h2 className='text-lg font-bold text-gray-800'>
                         Delete &quot;{itemToDelete.title}&quot;?
@@ -36,9 +50,19 @@ export const DeleteConfirmDialog:FC<ConfirmDeleteProps>=({
                         />
 
                         <Button
-                            buttonText={loading ? 'Deleting...' : 'Delete'}
-                            onClick={onConfirm}
-                            classname={`flex-1 bg-red-500 text-white hover:bg-red-600 ${loading ? 'opacity-50 cursor-not-allowed' : ''}`}
+                            buttonText={
+                                loading ? (
+                                    <>
+                                        Deleting
+                                        <Loader className="animate-spin w-4 h-4" />
+                                    </>
+                                ) : (
+                                    'Delete Item'
+                                )
+                            }
+                            onClick={handleDelete}
+                            
+                            classname={`flex gap-2 items-center bg-red-500 text-white hover:bg-red-600 ${loading ? 'opacity-50 cursor-not-allowed' : ''}`}
                         />
 
                     </div>

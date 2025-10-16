@@ -4,7 +4,6 @@ import { FC, useEffect, useState } from 'react'
 import { getGreeting } from '@/util';
 
 export const Greeting: FC = () => {
-
   const [greeting, setGreeting] = useState('Good Morning');
 
   useEffect(() => {
@@ -12,22 +11,20 @@ export const Greeting: FC = () => {
   }, []);
 
   return (
-    <div className="flex flex-col text-center items-center justify-center space-y-3 w-lg">
+    <div className="flex flex-col items-center justify-center space-y-3 w-full max-w-2xl text-center">
 
-      <h1 className="text-4xl font-bold text-[#003A59]">
+      <h1 className="text-3xl sm-text-4xl lg:text-4xl font-bold text-[#003A59] w-full leading-tight">
         {greeting}, Jhony!
       </h1>
 
-      <div className="text-lg flex items-center gap-2">
-
-        <span style={{ fontFamily: "'Apple Color Emoji','Segoe UI Emoji','Noto Color Emoji','Twemoji Mozilla',sans-serif" }}>
+      <div className="flex items-center gap-3 justify-center text-gray-600 text-base sm:text-lg">
+        <span className="text-xl" style={{ fontFamily: "'Apple Color Emoji','Segoe UI Emoji','Noto Color Emoji','Twemoji Mozilla',sans-serif" }}>
           🌤
         </span>
 
-        <p className="text-gray-500">
+        <p className="text-gray-500 max-w-md">
           It&apos;s better to go shopping before this Friday
         </p>
-
       </div>
 
     </div>

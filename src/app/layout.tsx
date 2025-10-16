@@ -1,7 +1,6 @@
-import type { Metadata } from 'next';
-import { Inter } from 'next/font/google';
 import './globals.css';
-import { FridgeProvider } from '@/context';
+import { Inter } from 'next/font/google';
+import type { Metadata } from 'next';
 import { Toaster } from 'sonner';
 
 const inter = Inter({ subsets: ['latin'] })
@@ -19,12 +18,16 @@ export default function RootLayout({
   return (
     <html lang='en'>
       <body
-        className={`${inter.className} antialiased`}
+        className={`${inter.className} antialiased bg-[#F4FAFF] m-0 p-0 min-h-screen `}
       >
-        <FridgeProvider>
+        <div className="fixed inset-0 w-full h-full flex flex-col -z-10">
+          <div className="h-1/3 bg-white w-full" />
+          <div className="h-2/3 bg-[#F4FAFF] w-full" />
+        </div>
+        <div className="relative min-h-screen w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 ">
           {children}
-          <Toaster position='top-right' richColors={true}/>
-        </FridgeProvider>
+        </div>
+        <Toaster position='top-right' richColors={true} />
       </body>
     </html>
   );

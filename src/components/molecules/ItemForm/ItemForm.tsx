@@ -1,19 +1,16 @@
 'use client'
 
-import { useState, useEffect } from 'react';
-import { useFridge } from '@/context';
-import { AddItem,ItemFormProps, isValidDateFormat } from '@/util';
+import { useState, useEffect,FC  } from 'react';
+import {  ItemFormProps, isValidDateFormat } from '@/util';
 import { Button, CustomInput } from '@/components';
-import { Replace } from 'lucide-react';
-import { FC } from 'react'
+import { Loader,Replace  } from 'lucide-react'
 
+export const ItemForm: FC<ItemFormProps> = ({ itemToEdit, onClose, onConfirm, setUpdatedItem }: ItemFormProps) => {
 
-
-export const ItemForm: FC<ItemFormProps> = ({ itemToEdit, onClose }: ItemFormProps) => {
-  const { addItem, updateItem } = useFridge();
   const [title, setTitle] = useState('');
   const [expiry, setExpiry] = useState('');
   const [error, setError] = useState('');
+  const [loading, setLoading] = useState<boolean>(false);
 
   useEffect(() => {
     if (itemToEdit) {
@@ -42,12 +39,11 @@ export const ItemForm: FC<ItemFormProps> = ({ itemToEdit, onClose }: ItemFormPro
       setError('Expiry date cannot be in the past.');
       return;
     }
-    const data: AddItem = { title, expiry };
     if (itemToEdit?._id) {
-      await updateItem(itemToEdit._id, data);
-    } else {
-      await addItem(data);
-    }
+      setLoading(true);
+      await onConfirm();
+      setLoading(false);
+    } 
     onClose();
   }
 
@@ -70,7 +66,11 @@ export const ItemForm: FC<ItemFormProps> = ({ itemToEdit, onClose }: ItemFormPro
             <CustomInput
               inputType='text'
               inputValue={title}
-              onChange={e => setTitle(e.target.value)}
+              onChange={e => {
+                const value = e.target.value;
+                setTitle(value)
+                setUpdatedItem?.(prev => prev ? { ...prev, title: value } : prev)
+              }}
               inputPlaceholder='Item title'
               classname='w-full border px-2 py-1'
             />
@@ -78,7 +78,11 @@ export const ItemForm: FC<ItemFormProps> = ({ itemToEdit, onClose }: ItemFormPro
             <CustomInput
               inputType='text'
               inputValue={expiry}
-              onChange={e => setExpiry(e.target.value)}
+              onChange={e => {
+                const value = e.target.value;
+                setExpiry(e.target.value);
+                setUpdatedItem?.(prev => prev ? { ...prev, expiry: value } : prev);
+              }}
               inputPlaceholder='Expiry (DD/MM/YYYY)'
               classname='w-full border px-2 py-1'
             />
@@ -98,10 +102,21 @@ export const ItemForm: FC<ItemFormProps> = ({ itemToEdit, onClose }: ItemFormPro
               />
 
               <Button
-                classname='text-white'
-                buttonText={`Update ${title}`}
+                classname="text-white flex items-center gap-2"
+                type="submit"
+                buttonText={
+                  loading ? (
+                    <>
+                      Updating
+                      <Loader className="animate-spin w-4 h-4" />
+                    </>
+                  ) : (
+                    'Update Item'
+                  )
+                }
               />
-              
+
+
             </div>
 
           </form>

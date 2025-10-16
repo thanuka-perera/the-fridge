@@ -1,16 +1,17 @@
 'use client'
 
-import { TriangleAlert } from 'lucide-react';
-import { useState } from 'react'
-import { Button, CustomInput } from '@/components'
-import { FormData, isValidDateFormat } from '@/util'
-import { useFridge } from '@/context';
-import { FC } from 'react'
+import { useRouter } from 'next/navigation';
+import { TriangleAlert, Loader } from 'lucide-react';
+import { useState, FC } from 'react'
+import { Button, CustomInput, } from '@/components'
+import { FormData, isValidDateFormat, saveFood } from '@/util'
+import { toast } from 'sonner'
 
 export const AddToFridge: FC = () => {
-  const { addItem, error, setError } = useFridge();
+  const [error, setError] = useState<string>('');
   const [formData, setFormData] = useState<FormData>({ itemName: '', expiryDate: '' })
-
+  const [loading, setLoading] = useState<boolean>(false);
+  const router = useRouter();
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -27,7 +28,7 @@ export const AddToFridge: FC = () => {
     }
 
     if (!isValidDateFormat(formData.expiryDate)) {
-      setError('Expiry date must be in YYYY/MM/DD format.Please check whether the given date is valid');
+      setError('Expiry date must be in YYYY/MM/DD format.');
       return;
     }
 
@@ -40,23 +41,37 @@ export const AddToFridge: FC = () => {
     }
 
     setFormData({ itemName: '', expiryDate: '' });
+    setLoading(true);
 
-    await addItem({
+    const item = {
       title: formData.itemName,
       expiry: formData.expiryDate,
-    });
+    }
 
+    try {
+      setLoading(true);
+      await saveFood(item);
+      toast.success(`${item.title} added to Fridge`)
+    } catch (error) {
+      console.error('Add item error:', error);
+      toast.error(`Error adding ${item.title}`)
+      setError('Failed to add item.');
+    } finally {
+      setLoading(false);
+    }
     setError('');
+
+    router.refresh();
   };
 
   return (
-    <div className='flex flex-col items-center w-full'>
+    <div className='w-full'>
       <form onSubmit={handleSubmit}
-        className='w-full bg-white border border-[#E3E9F1] rounded-lg shadow-sm p-6 flex flex-col gap-4'
+        className='w-full bg-white border border-[#E3E9F1] rounded-xl shadow-sm p-6 lg:p-8'
       >
-        <div className='flex flex-wrap items-end sm:justify-between justify-center gap-4'>
+        <div className='grid grid-cols-1 lg:grid-cols-3 gap-4 lg:gap-6 items-end'>
 
-          <div className='flex-1 w-[240px] max-w-sm'>
+          <div className='lg:col-span-1'>
             <CustomInput
               inputLabel='Item Name'
               inputEmoji='🍉'
@@ -67,7 +82,7 @@ export const AddToFridge: FC = () => {
             />
           </div>
 
-          <div className='flex-1 w-[240px] max-w-sm'>
+          <div className='lg:col-span-1'>
             <CustomInput
               inputLabel='Expiry Date'
               inputEmoji='⏰'
@@ -78,17 +93,30 @@ export const AddToFridge: FC = () => {
             />
           </div>
 
-          <Button classname='text-white text-md' buttonText='ADD TO FRIDGE' />
+          <div className="lg:col-span-1 flex lg:justify-end">
+            <Button classname='w-full lg:w-auto text-white text-md flex gap-2 items-center justify-center min-w-[200px]' buttonText={
+              loading ? (
+                <>
+                  Adding
+                  <Loader className="animate-spin w-4 h-4" />
+                </>
+              ) : (
+                'Add to Fridge'
+              )
+            }
+              onClick={handleSubmit}
+            />
+          </div>
         </div>
 
         {error && (
-          <div className='text-red-500 text-sm flex items-center sm:justify-start justify-center gap-1 p-1'>
+          <div className='mt-4 text-red-500 text-sm flex items-center gap-2 p-2 bg-red-50 rounded-lg border border-red-200'>
             <TriangleAlert size='14' /> {error}
           </div>
         )}
 
-        <div className='text-gray-500 text-sm flex items-center sm:justify-start justify-center gap-1 p-1'>
-          <TriangleAlert className='text-gray-500' size='14' />
+        <div className='mt-4 text-gray-500 text-sm flex items-center sm:justify-start justify-center gap-1 p-1'>
+          <TriangleAlert className='text-gray-500 mt-0.5 flex-shrink-0' size='14' />
           We don&apos;t want more than one piece of the same food in our fridge.
         </div>
       </form>

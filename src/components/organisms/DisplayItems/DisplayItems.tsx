@@ -1,60 +1,105 @@
 'use client'
 
-import { ItemComponent, Loading, DeleteConfirmDialog, ItemForm } from '@/components';
-import { useFridge } from '@/context';
-import { Item } from '@/util'
-import { FC ,useState } from 'react'
+import { ItemComponent, DeleteConfirmDialog, ItemForm } from '@/components';
+import { Item, DisplayItemsProps, deleteFood, updateFood } from '@/util'
+import { FC, useState, useEffect } from 'react'
+import { useRouter } from 'next/navigation';
+import { toast } from 'sonner'
 
+export const DisplayItems: FC<DisplayItemsProps> = ({ foodItems }: DisplayItemsProps) => {
 
-export const DisplayItems: FC = () => {
-    const { items, loading, deleteItem } = useFridge();
+    const [items, setItems] = useState<Item[]>(foodItems);
     const [deleteItemData, setDeleteItemData] = useState<Item | null>(null);
     const [isDeleting, setIsDeleting] = useState(false);
-    const [editItem, setEditItem] = useState<Item | null>(null);
+    const [updateItemData, setUpdateItemData] = useState<Item | null>(null);
+    const [isUpdating, setIsUpdating] = useState(false);
+    const router = useRouter();
 
     const handleDelete = async () => {
         if (!deleteItemData || isDeleting) return;
         try {
             setIsDeleting(true);
-            await deleteItem(deleteItemData._id!);
+            await deleteFood(deleteItemData._id);
+            router.refresh();
+            toast.success('Item deleted successfully');
             setDeleteItemData(null);
         } catch (err) {
             console.error('Delete failed:', err);
+            toast.error('Error deleting Item')
         } finally {
             setIsDeleting(false);
         }
     };
 
-    if (loading) return <Loading />
-    
-    return (
-        <div className='w-full grid grid-cols-1  space-y-1'>
+    const handleUpdate = async () => {
+        if (!updateItemData || isUpdating) return;
+        try {
+            setIsUpdating(true);
+            await updateFood(updateItemData._id!, updateItemData);
+            router.refresh();
+            setUpdateItemData(null)
+            toast.success(`${updateItemData.title} updated successfully`);
+        }
+        catch (err) {
+            console.error('Update failed:', err);
+            toast.error(`Failed to update ${updateItemData.title}`)
+        }
+        finally {
+            setIsUpdating(false);
+        }
+    }
 
-            <div className='font-semibold px-3 py-4 grid justify-end items-center'>
-                Total items- {items.length}
+    useEffect(() => {
+        const sorted = [...foodItems].sort(
+            (a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
+        );
+        setItems(sorted);
+    }, [foodItems]);
+
+    return (
+        <div className='w-full space-y-1'>
+
+
+            <div className="flex justify-end items-center">
+
+                <div className='text-sm font-medium px-3 py-4 grid justify-end items-center'>
+                    Total items- {items.length}
+                </div>
             </div>
 
-            {items.map(item => (
-                <ItemComponent 
-                    key={item._id} 
-                    itemDetails={item} 
-                    onDelete={() => setDeleteItemData(item)} 
-                    onClick={() => setEditItem(item)} 
-                />
-            ))}
+            {items.length === 0 ? (
+                <div className='w-full flex flex-col items-center justify-center gap-3 p-6 border  border-gray-300 rounded-lg bg-white'>
+                    <p className='text-gray-500 text-center'>No items in the fridge. Start by adding some!</p>
+                </div>
+            ) : (
+                <div className="grid gap-2">
+                    {items.map(item => (
+                        <ItemComponent
+                            key={item._id}
+                            itemDetails={item}
+                            onDelete={() => setDeleteItemData(item)}
+                            onClick={() => setUpdateItemData(item)}
+                        />
+                    ))}
 
+                </div>
+
+            )}
             {deleteItemData && (
                 <DeleteConfirmDialog
                     itemToDelete={deleteItemData}
                     onCancel={() => setDeleteItemData(null)}
                     onConfirm={handleDelete}
+                    onClose={() => setDeleteItemData(null)}
                 />
             )}
 
-            {editItem && (
+            {updateItemData && (
                 <ItemForm
-                    itemToEdit={editItem}
-                    onClose={() => setEditItem(null)}
+                    itemToEdit={updateItemData}
+                    setUpdatedItem={setUpdateItemData}
+                    onClose={() => setUpdateItemData(null)}
+                    onConfirm={handleUpdate}
                 />
             )}
 

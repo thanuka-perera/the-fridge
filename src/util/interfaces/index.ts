@@ -1,10 +1,3 @@
-export type { ButtonProps } from './props/buttonProps'
-export type { ConfirmDeleteProps } from './props/confirmDeleteProps'
-export type { CustomInputProps } from './props/customInputProps'
-export type { ItemFormProps } from './props/itemFormProps'
-export type { ItemProps } from './props/itemProps'
+export type { ButtonProps, ConfirmDeleteProps, CustomInputProps, ItemFormProps, ItemProps ,DisplayItemsProps } from './props'
 
-export type { AddItem } from './types/addItemTypes'
-export type { FridgeContextType } from './types/contextType'
-export type { FormData } from './types/formDataTypes'
-export type { Item } from './types/itemType'
+export type { AddItem, FormData, Item } from './types'
