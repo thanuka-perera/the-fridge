@@ -1,9 +1,9 @@
 'use client'
 
-import { useState, useEffect,FC  } from 'react';
-import {  ItemFormProps, isValidDateFormat } from '@/util';
+import { useState, useEffect, useRef, FC } from 'react';
+import { ItemFormProps, isValidDateFormat } from '@/util';
 import { Button, CustomInput } from '@/components';
-import { Loader,Replace  } from 'lucide-react'
+import { Loader, Replace } from 'lucide-react'
 
 export const ItemForm: FC<ItemFormProps> = ({ itemToEdit, onClose, onConfirm, setUpdatedItem }: ItemFormProps) => {
 
@@ -11,16 +11,54 @@ export const ItemForm: FC<ItemFormProps> = ({ itemToEdit, onClose, onConfirm, se
   const [expiry, setExpiry] = useState('');
   const [error, setError] = useState('');
   const [loading, setLoading] = useState<boolean>(false);
+  const modalRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
+
     if (itemToEdit) {
       setTitle(itemToEdit.title);
       setExpiry(itemToEdit.expiry);
     }
+
   }, [itemToEdit]);
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
+  useEffect(() => {
+    const handleKeyPress = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') {
+        e.preventDefault();
+        onClose();
+      }
+    }
+
+    document.addEventListener('keydown', handleKeyPress);
+    return () => document.removeEventListener('keydown', handleKeyPress);
+  }, [onClose])
+
+  useEffect(() => {
+    const handleClickOutside = (e: MouseEvent) => {
+      if (modalRef.current && !modalRef.current.contains(e.target as Node)) {
+        onClose();
+      }
+    };
+
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, [onClose]);
+
+
+  useEffect(() => {
+    const handleClickOutside = (e: MouseEvent) => {
+      if (modalRef.current && !modalRef.current.contains(e.target as Node)) {
+        onClose();
+      }
+    };
+
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, [onClose]);
+
+  const handleSubmit = async (e?: React.FormEvent) => {
+    e?.preventDefault();
 
     if (!title || !expiry) {
       setError('Both fields are required.');
@@ -35,21 +73,23 @@ export const ItemForm: FC<ItemFormProps> = ({ itemToEdit, onClose, onConfirm, se
     const enteredDate = new Date(expiry.replaceAll('/', '-'));
     const today = new Date();
     today.setHours(0, 0, 0, 0);
+
     if (enteredDate < today) {
       setError('Expiry date cannot be in the past.');
       return;
     }
+
     if (itemToEdit?._id) {
       setLoading(true);
       await onConfirm();
       setLoading(false);
-    } 
+    }
     onClose();
   }
 
   return (
     <div className='fixed inset-0 flex items-center justify-center bg-black/50'>
-      <div className='bg-white rounded-2xl shadow-lg w-96 p-6 relative'>
+      <div className='bg-white rounded-2xl shadow-lg w-96 p-6 relative' ref={modalRef}>
         <div className='flex flex-col justify-center items-center gap-4'>
 
           <Replace

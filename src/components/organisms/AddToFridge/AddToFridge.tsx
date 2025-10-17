@@ -104,7 +104,7 @@ export const AddToFridge: FC = () => {
                 'Add to Fridge'
               )
             }
-              onClick={handleSubmit}
+              type="submit"
             />
           </div>
         </div>

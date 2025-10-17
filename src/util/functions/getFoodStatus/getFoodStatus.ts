@@ -1,5 +1,6 @@
-export const getFoodStatus = (expiryDateStr: string) => {
+import { addMonths } from 'date-fns';
 
+export const getFoodStatus = (expiryDateStr: string) => {
     if (!expiryDateStr) {
         return {
             label: 'Unknown',
@@ -8,25 +9,21 @@ export const getFoodStatus = (expiryDateStr: string) => {
         };
     }
 
-    let expiryDate: Date | null = null;
+    const normalizedStr = expiryDateStr.replaceAll('/', '-');
 
-    if (expiryDateStr.includes('-')) {
+    let formattedStr = normalizedStr;
+    const parts = normalizedStr.split('-').map(Number);
 
-        expiryDate = new Date(expiryDateStr);
-    } 
-    else if (expiryDateStr.includes('/')) {
-
-        const parts = expiryDateStr.split('/').map(Number);
-        if (parts[0] > 31) {
-
-            expiryDate = new Date(parts[0], parts[1] , parts[2]);
-        } else {
-
-            expiryDate = new Date(parts[2], parts[1] , parts[0]);
-        }
+    if (parts[0] <= 31 && parts[2] > 31) {
+        const [day, month, year] = parts;
+        formattedStr = `${year}-${String(month).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
+    } else {
+        const [year, month, day] = parts;
+        formattedStr = `${year}-${String(month).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
     }
 
-    if (!expiryDate || isNaN(expiryDate.getTime())) {
+    const expiryDate = new Date(formattedStr);
+    if (isNaN(expiryDate.getTime())) {
         return {
             label: 'Invalid date',
             labelClasses: 'bg-gray-200 text-gray-600',
@@ -39,26 +36,27 @@ export const getFoodStatus = (expiryDateStr: string) => {
     const today = new Date();
     today.setHours(0, 0, 0, 0);
 
-    const oneMonthFromNow = new Date(today);
-    oneMonthFromNow.setDate(today.getDate() + 30);
+    const oneMonthFromNow = addMonths(today, 1);
 
     if (expiryDate < today) {
         return {
             label: 'Expired',
             labelClasses: 'bg-[#FFEBEB] text-[#752B2B]',
-            iconColor: 'text-red-500'
+            iconColor: 'text-red-500',
         };
     }
-    if (expiryDate < oneMonthFromNow) {
+
+    if (expiryDate <= oneMonthFromNow) {
         return {
             label: 'Expiring soon',
             labelClasses: 'bg-[#FFFDCC] text-[#754311]',
-            iconColor: 'text-yellow-500'
+            iconColor: 'text-yellow-500',
         };
     }
+
     return {
         label: 'Healthy',
         labelClasses: 'bg-[#DBFFE6] text-[#23553E]',
-        iconColor: 'text-gray-600'
+        iconColor: 'text-gray-600',
     };
 };

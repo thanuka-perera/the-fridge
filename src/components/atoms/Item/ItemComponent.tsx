@@ -1,6 +1,14 @@
+'use client';
+
 import { Trash } from 'lucide-react';
 import { ItemProps, getFoodStatus } from '@/util'
-import { FC } from 'react'
+import { FC, useState, useEffect } from 'react'
+
+interface Status{
+    label:string,
+    labelClasses:string,
+    iconColor:string
+}
 
 
 export const ItemComponent: FC<ItemProps> = ({
@@ -8,8 +16,12 @@ export const ItemComponent: FC<ItemProps> = ({
     onClick,
     onDelete
 }: ItemProps) => {
+    const [status,setStatus] = useState<Status>({label:'',labelClasses:'',iconColor:''});
 
-    const status = getFoodStatus(itemDetails.expiry)
+    useEffect(()=>{
+        const CurrentStatus =  getFoodStatus(itemDetails.expiry)
+        setStatus(CurrentStatus)
+    },[itemDetails.expiry])
 
     return (
         <div

@@ -59,7 +59,6 @@ export const DisplayItems: FC<DisplayItemsProps> = ({ foodItems }: DisplayItemsP
     return (
         <div className='w-full space-y-1'>
 
-
             <div className="flex justify-end items-center">
 
                 <div className='text-sm font-medium px-3 py-4 grid justify-end items-center'>
