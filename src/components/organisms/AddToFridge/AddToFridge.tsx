@@ -33,15 +33,19 @@ export const AddToFridge: FC = () => {
     }
 
     const enteredDate = new Date(formData.expiryDate.replaceAll('/', '-'));
+
+    if (isNaN(enteredDate.getTime())) {
+      setError('Invalid date entered.');
+      return;
+    }
+
     const today = new Date();
     today.setHours(0, 0, 0, 0);
+
     if (enteredDate < today) {
       setError('Expiry date cannot be in the past.');
       return;
     }
-
-    setFormData({ itemName: '', expiryDate: '' });
-    setLoading(true);
 
     const item = {
       title: formData.itemName,
@@ -51,7 +55,8 @@ export const AddToFridge: FC = () => {
     try {
       setLoading(true);
       await saveFood(item);
-      toast.success(`${item.title} added to Fridge`)
+      toast.success(`${item.title} added to Fridge`);
+      setFormData({ itemName: '', expiryDate: '' });
     } catch (error) {
       console.error('Add item error:', error);
       toast.error(`Error adding ${item.title}`)
@@ -94,16 +99,18 @@ export const AddToFridge: FC = () => {
           </div>
 
           <div className="lg:col-span-1 flex lg:justify-end">
-            <Button classname='w-full lg:w-auto text-white text-md flex gap-2 items-center justify-center min-w-[200px]' buttonText={
-              loading ? (
-                <>
-                  Adding
-                  <Loader className="animate-spin w-4 h-4" />
-                </>
-              ) : (
-                'Add to Fridge'
-              )
-            }
+            <Button classname='w-full lg:w-auto text-white text-md flex gap-2 items-center justify-center min-w-[200px]'
+              disabled={loading}
+              buttonText={
+                loading ? (
+                  <>
+                    Adding
+                    <Loader className="animate-spin w-4 h-4" />
+                  </>
+                ) : (
+                  'Add to Fridge'
+                )
+              }
               type="submit"
             />
           </div>
