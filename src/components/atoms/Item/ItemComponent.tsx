@@ -47,7 +47,7 @@ export const ItemComponent: FC<ItemProps> = ({
                     <span className="text-xs text-gray-500 flex ">Expiry date - </span>
                     <div className='text-xs text-gray-500 hidden sm:flex'>
                         {itemDetails.expiry
-                            ? itemDetails.expiry.toString()
+                            ? itemDetails.expiry.toLocaleDateString('en-CA')
                             : 'Unknown'}
 
                     </div>
