@@ -4,10 +4,11 @@ import { useRouter } from 'next/navigation';
 import { TriangleAlert, Loader } from 'lucide-react';
 import { useState, FC } from 'react'
 import { Button, CustomInput, } from '@/components'
-import { FormData, isValidDateFormat, saveFood } from '@/util'
+import { FormData, inputStringToDisplayString, saveFood } from '@/util'
 import { toast } from 'sonner'
 
-export const AddToFridge: FC = () => {
+export const AddItem: FC = () => {
+
   const [error, setError] = useState<string>('');
   const [formData, setFormData] = useState<FormData>({ itemName: '', expiryDate: '' })
   const [loading, setLoading] = useState<boolean>(false);
@@ -27,12 +28,14 @@ export const AddToFridge: FC = () => {
       return;
     }
 
-    if (!isValidDateFormat(formData.expiryDate)) {
-      setError('Expiry date must be in YYYY/MM/DD format.');
+    const formattedDate = inputStringToDisplayString(formData.expiryDate);
+    if (!formattedDate) {
+      setError('Invalid date entered.');
       return;
     }
 
     const enteredDate = new Date(formData.expiryDate.replaceAll('/', '-'));
+    console.log("Entered Date: ", enteredDate);
 
     if (isNaN(enteredDate.getTime())) {
       setError('Invalid date entered.');
@@ -49,7 +52,7 @@ export const AddToFridge: FC = () => {
 
     const item = {
       title: formData.itemName,
-      expiry: formData.expiryDate,
+      expiry: formattedDate,
     }
 
     try {
@@ -92,7 +95,8 @@ export const AddToFridge: FC = () => {
               inputLabel='Expiry Date'
               inputEmoji='⏰'
               inputName='expiryDate'
-              inputPlaceholder='YYYY/MM/DD'
+              inputPlaceholder='YYYY-MM-DD'
+              inputType='date'
               inputValue={formData.expiryDate}
               onChange={handleChange}
             />
@@ -117,9 +121,11 @@ export const AddToFridge: FC = () => {
         </div>
 
         {error && (
+
           <div className='mt-4 text-red-500 text-sm flex items-center gap-2 p-2 bg-red-50 rounded-lg border border-red-200'>
             <TriangleAlert size='14' /> {error}
           </div>
+
         )}
 
         <div className='mt-4 text-gray-500 text-sm flex items-center sm:justify-start justify-center gap-1 p-1'>

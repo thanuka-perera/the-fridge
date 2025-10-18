@@ -3,17 +3,19 @@
 import { FC, useEffect, useState } from 'react'
 import { getGreeting } from '@/util';
 
-export const Greeting: FC = () => {
+export const IntroSection: FC = () => {
   const [greeting, setGreeting] = useState('Good Morning');
 
   useEffect(() => {
     setGreeting(getGreeting());
   }, []);
 
+  if (!greeting) return null; 
+
   return (
     <div className="flex flex-col items-center justify-center space-y-3 w-full max-w-2xl text-center">
 
-      <h1 className="text-3xl sm-text-4xl lg:text-4xl font-bold text-[#003A59] w-full leading-tight">
+      <h1 className="text-3xl sm-text-4xl lg:text-4xl font-bold text-[#003A59] w-full">
         {greeting}, Jhony!
       </h1>
 
@@ -22,7 +24,7 @@ export const Greeting: FC = () => {
           🌤
         </span>
 
-        <p className="text-gray-500 max-w-md">
+        <p className="text-gray-500 max-w-sm">
           It&apos;s better to go shopping before this Friday
         </p>
       </div>

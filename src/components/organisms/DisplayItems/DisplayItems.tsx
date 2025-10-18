@@ -1,7 +1,7 @@
 'use client'
 
-import { ItemComponent, DeleteConfirmDialog, ItemForm } from '@/components';
-import { Item, DisplayItemsProps, deleteFood, updateFood } from '@/util'
+import { ItemComponent, UpdateModal, DeleteModal } from '@/components';
+import { DisplayItemsProps, deleteFood, ItemInput, Item, updateFood, dateToInputString } from '@/util'
 import { FC, useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation';
 import { toast } from 'sonner'
@@ -13,6 +13,7 @@ export const DisplayItems: FC<DisplayItemsProps> = ({ foodItems }: DisplayItemsP
     const [isDeleting, setIsDeleting] = useState(false);
     const [updateItemData, setUpdateItemData] = useState<Item | null>(null);
     const [isUpdating, setIsUpdating] = useState(false);
+    const [formItemData, setFormItemData] = useState<ItemInput | null>(null);
     const router = useRouter();
 
     const handleDelete = async () => {
@@ -32,10 +33,14 @@ export const DisplayItems: FC<DisplayItemsProps> = ({ foodItems }: DisplayItemsP
     };
 
     const handleUpdate = async () => {
+
         if (!updateItemData || isUpdating) return;
+
+        if (!formItemData) return;
+
         try {
             setIsUpdating(true);
-            await updateFood(updateItemData._id!, updateItemData);
+            await updateFood(updateItemData._id!, { title: formItemData.title, expiry: formItemData.expiry });
             router.refresh();
             setUpdateItemData(null)
             toast.success(`${updateItemData.title} updated successfully`);
@@ -68,7 +73,7 @@ export const DisplayItems: FC<DisplayItemsProps> = ({ foodItems }: DisplayItemsP
 
             {items.length === 0 ? (
                 <div className='w-full flex flex-col items-center justify-center gap-3 p-6 border  border-gray-300 rounded-lg bg-white'>
-                    <p className='text-gray-500 text-center'>No items in the fridge. Start by adding some!</p>
+                    <div className='text-gray-500 text-center'>No items in the fridge. Start by adding some!</div>
                 </div>
             ) : (
                 <div className="grid gap-2">
@@ -77,27 +82,36 @@ export const DisplayItems: FC<DisplayItemsProps> = ({ foodItems }: DisplayItemsP
                             key={item._id}
                             itemDetails={item}
                             onDelete={() => setDeleteItemData(item)}
-                            onClick={() => setUpdateItemData(item)}
+                            onClick={() => {
+                                setUpdateItemData(item);
+                                setFormItemData({
+                                    _id: item._id,
+                                    title: item.title,
+                                    expiry: item.expiry ? dateToInputString(item.expiry) : '',
+                                    price: item.price,
+                                    createdAt: item.createdAt,
+                                });
+                            }}
                         />
                     ))}
 
                 </div>
 
             )}
+
             {deleteItemData && (
-                <DeleteConfirmDialog
+                <DeleteModal
                     itemToDelete={deleteItemData}
-                    onCancel={() => setDeleteItemData(null)}
                     onConfirm={handleDelete}
                     onClose={() => setDeleteItemData(null)}
                 />
             )}
 
             {updateItemData && (
-                <ItemForm
-                    itemToEdit={updateItemData}
-                    setUpdatedItem={setUpdateItemData}
-                    onClose={() => setUpdateItemData(null)}
+                <UpdateModal
+                    itemToEdit={formItemData}
+                    setUpdatedItem={setFormItemData}
+                    onClose={() => { setUpdateItemData(null); setFormItemData(null); }}
                     onConfirm={handleUpdate}
                 />
             )}

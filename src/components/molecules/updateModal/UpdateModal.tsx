@@ -1,14 +1,14 @@
 'use client'
 
 import { useState, useEffect, useRef, FC } from 'react';
-import { ItemFormProps, isValidDateFormat } from '@/util';
+import { ItemFormProps, inputStringToDisplayString } from '@/util';
 import { Button, CustomInput } from '@/components';
 import { Loader, Replace } from 'lucide-react'
 
-export const ItemForm: FC<ItemFormProps> = ({ itemToEdit, onClose, onConfirm, setUpdatedItem }: ItemFormProps) => {
+export const UpdateModal: FC<ItemFormProps> = ({ itemToEdit, onClose, onConfirm, setUpdatedItem }: ItemFormProps) => {
 
   const [title, setTitle] = useState('');
-  const [expiry, setExpiry] = useState('');
+  const [expiry, setExpiry] = useState<string>('');
   const [error, setError] = useState('');
   const [loading, setLoading] = useState<boolean>(false);
   const modalRef = useRef<HTMLDivElement>(null);
@@ -17,7 +17,7 @@ export const ItemForm: FC<ItemFormProps> = ({ itemToEdit, onClose, onConfirm, se
 
     if (itemToEdit) {
       setTitle(itemToEdit.title);
-      setExpiry(itemToEdit.expiry);
+      setExpiry(itemToEdit.expiry || '');
     }
 
   }, [itemToEdit]);
@@ -45,18 +45,7 @@ export const ItemForm: FC<ItemFormProps> = ({ itemToEdit, onClose, onConfirm, se
     return () => document.removeEventListener('mousedown', handleClickOutside);
   }, [onClose]);
 
-
-  useEffect(() => {
-    const handleClickOutside = (e: MouseEvent) => {
-      if (modalRef.current && !modalRef.current.contains(e.target as Node)) {
-        onClose();
-      }
-    };
-
-    document.addEventListener('mousedown', handleClickOutside);
-    return () => document.removeEventListener('mousedown', handleClickOutside);
-  }, [onClose]);
-
+  
   const handleSubmit = async (e?: React.FormEvent) => {
     e?.preventDefault();
 
@@ -65,12 +54,18 @@ export const ItemForm: FC<ItemFormProps> = ({ itemToEdit, onClose, onConfirm, se
       return;
     }
 
-    if (!isValidDateFormat(expiry)) {
-      setError('Expiry date must be in YYYY/MM/DD format.Please check whether the given date is valid');
+    if (!itemToEdit) {
+      setError('No item to edit.');
       return;
     }
 
-    const enteredDate = new Date(expiry.replaceAll('/', '-'));
+    const formattedDate = inputStringToDisplayString(itemToEdit.expiry);
+    if (!formattedDate) {
+      setError('Invalid date entered.');
+      return;
+    }
+
+    const enteredDate = new Date(expiry);
     const today = new Date();
     today.setHours(0, 0, 0, 0);
 
@@ -116,15 +111,15 @@ export const ItemForm: FC<ItemFormProps> = ({ itemToEdit, onClose, onConfirm, se
             />
 
             <CustomInput
-              inputType='text'
+              classname='w-full border px-2 py-1'
+              inputPlaceholder='Expiry (DD/MM/YYYY)'
+              inputType='date'
               inputValue={expiry}
               onChange={e => {
                 const value = e.target.value;
-                setExpiry(e.target.value);
+                setExpiry(value);
                 setUpdatedItem?.(prev => prev ? { ...prev, expiry: value } : prev);
               }}
-              inputPlaceholder='Expiry (DD/MM/YYYY)'
-              classname='w-full border px-2 py-1'
             />
 
             {error && (

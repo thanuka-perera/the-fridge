@@ -1,4 +1,4 @@
 export interface FormData {
     itemName: string,
-    expiryDate: string
+    expiryDate: string,
 }

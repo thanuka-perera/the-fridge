@@ -1,5 +1,5 @@
 export { Button, CustomInput, ItemComponent, Loading } from './atoms'
 
-export { DeleteConfirmDialog, ItemForm } from './molecules'
+export { DeleteModal, UpdateModal } from './molecules'
 
-export { DisplayItems, AddToFridge, Greeting } from './organisms'
+export { DisplayItems, AddItem, IntroSection } from './organisms'

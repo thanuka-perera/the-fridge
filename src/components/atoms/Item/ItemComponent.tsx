@@ -4,10 +4,10 @@ import { Trash } from 'lucide-react';
 import { ItemProps, getFoodStatus } from '@/util'
 import { FC, useState, useEffect } from 'react'
 
-interface Status{
-    label:string,
-    labelClasses:string,
-    iconColor:string
+interface Status {
+    label: string,
+    labelClasses: string,
+    iconColor: string
 }
 
 
@@ -16,12 +16,19 @@ export const ItemComponent: FC<ItemProps> = ({
     onClick,
     onDelete
 }: ItemProps) => {
-    const [status,setStatus] = useState<Status>({label:'',labelClasses:'',iconColor:''});
 
-    useEffect(()=>{
-        const CurrentStatus =  getFoodStatus(itemDetails.expiry)
+    const [status, setStatus] = useState<Status>({
+        label: 'Loading...',
+        labelClasses: 'bg-gray-100 text-gray-400',
+        iconColor: 'text-gray-400'
+    });
+
+    useEffect(() => {
+        const CurrentStatus = getFoodStatus(itemDetails.expiry)
         setStatus(CurrentStatus)
-    },[itemDetails.expiry])
+    }, [itemDetails.expiry])
+
+    console.log("Rendering Date: ",itemDetails.expiry);
 
     return (
         <div
@@ -38,7 +45,12 @@ export const ItemComponent: FC<ItemProps> = ({
                 </div>
                 <div className="items-center md:flex hidden gap-2">
                     <span className="text-xs text-gray-500 flex ">Expiry date - </span>
-                    <p className='text-xs text-gray-500 hidden sm:flex'>{itemDetails.expiry}</p>
+                    <div className='text-xs text-gray-500 hidden sm:flex'>
+                        {itemDetails.expiry
+                            ? itemDetails.expiry.toString()
+                            : 'Unknown'}
+
+                    </div>
                 </div>
             </div>
 
@@ -48,7 +60,7 @@ export const ItemComponent: FC<ItemProps> = ({
                     <span className={`inline-flex items-center justify-center px-3 py-1 rounded-full text-xs font-medium transition-colors duration-200 
                         ${status.labelClasses}`}
                         style={{ minWidth: '110px', maxWidth: '130px' }}>
-                        {status.label}
+                        {status.label || ''}
                     </span>
                 </div>
 

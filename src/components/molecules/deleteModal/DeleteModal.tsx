@@ -5,9 +5,8 @@ import { ConfirmDeleteProps } from '@/util'
 import { FC, useState, useEffect, useRef, useCallback } from 'react'
 import { Loader, Trash2 } from 'lucide-react'
 
-export const DeleteConfirmDialog: FC<ConfirmDeleteProps> = ({
+export const DeleteModal: FC<ConfirmDeleteProps> = ({
   itemToDelete,
-  onCancel,
   onConfirm,
   onClose,
 }: ConfirmDeleteProps) => {
@@ -33,12 +32,12 @@ export const DeleteConfirmDialog: FC<ConfirmDeleteProps> = ({
       }
       else if (e.key === ' ' || e.key === 'Escape') {
         e.preventDefault();
-        onCancel();
+        onClose();
       }
     }
     document.addEventListener('keydown', handleKeyPress);
     return () => document.removeEventListener('keydown', handleKeyPress);
-  }, [handleDelete,onCancel])
+  }, [handleDelete,onClose])
 
   useEffect(() => {
     const handleClickOutside = (e: MouseEvent) => {
@@ -64,15 +63,15 @@ export const DeleteConfirmDialog: FC<ConfirmDeleteProps> = ({
           <h2 className='text-lg font-bold text-gray-800'>
             Delete &quot;{itemToDelete.title}&quot;?
           </h2>
-          <p className='text-sm text-gray-500 text-center'>
+          <div className='text-sm text-gray-500 text-center'>
             This action is irreversible. Are you sure you want to delete this item from your fridge?
-          </p>
+          </div>
 
           <div className='flex items-center justify-center gap-12 mt-4 w-full'>
 
             <Button
               buttonText='Cancel'
-              onClick={onCancel}
+              onClick={onClose}
               classname='flex-1 border border-gray-300 bg-white text-gray-700 hover:bg-gray-50'
             />
 

@@ -1,8 +1,8 @@
-import { Item } from '@/util'
+import { ItemInput } from '@/util'
 
 export interface ItemFormProps {
-  itemToEdit?: Item | null;
+  itemToEdit?: ItemInput | null;
   onClose: () => void;
   onConfirm:()=>void
-  setUpdatedItem?: React.Dispatch<React.SetStateAction<Item | null >>;
+  setUpdatedItem?: React.Dispatch<React.SetStateAction<ItemInput | null >>;
 }

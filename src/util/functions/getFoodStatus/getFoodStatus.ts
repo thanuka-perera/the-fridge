@@ -1,7 +1,7 @@
 import { addMonths } from 'date-fns';
 
-export const getFoodStatus = (expiryDateStr: string) => {
-    if (!expiryDateStr) {
+export const getFoodStatus = (expiryDate: Date | null) => {
+    if (!expiryDate) {
         return {
             label: 'Unknown',
             labelClasses: 'bg-gray-100 text-gray-500',
@@ -9,20 +9,6 @@ export const getFoodStatus = (expiryDateStr: string) => {
         };
     }
 
-    const normalizedStr = expiryDateStr.replaceAll('/', '-');
-
-    let formattedStr = normalizedStr;
-    const parts = normalizedStr.split('-').map(Number);
-
-    if (parts[0] <= 31 && parts[2] > 31) {
-        const [day, month, year] = parts;
-        formattedStr = `${year}-${String(month).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
-    } else {
-        const [year, month, day] = parts;
-        formattedStr = `${year}-${String(month).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
-    }
-
-    const expiryDate = new Date(formattedStr);
     if (isNaN(expiryDate.getTime())) {
         return {
             label: 'Invalid date',

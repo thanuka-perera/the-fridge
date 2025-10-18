@@ -21,13 +21,16 @@ export default function RootLayout({
         className={`${inter.className} antialiased bg-[#F4FAFF] m-0 p-0 min-h-screen `}
       >
         <div className="fixed inset-0 w-full h-full flex flex-col -z-10">
-          <div className="h-1/3 bg-white w-full" />
-          <div className="h-2/3 bg-[#F4FAFF] w-full" />
+          <div className="h-[48%] bg-white w-full" />
+          <div className="h-[52%] bg-[#F4FAFF] w-full" />
         </div>
+
         <div className="relative min-h-screen w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 ">
           {children}
         </div>
+
         <Toaster position='top-right' richColors={true} />
+        
       </body>
     </html>
   );

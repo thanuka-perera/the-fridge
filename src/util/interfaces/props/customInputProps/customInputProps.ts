@@ -7,6 +7,6 @@ export interface CustomInputProps {
     inputName?: string
     inputPlaceholder?: string
     inputType?: string
-    inputValue?: string
+    inputValue?: string ;
     onChange?:(e: ChangeEvent<HTMLInputElement>) => void; 
 }

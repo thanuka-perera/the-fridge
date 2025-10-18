@@ -1,2 +1,2 @@
-export { DeleteConfirmDialog } from './DeleteConfirmDialog'
-export { ItemForm } from './ItemForm'
+export { DeleteModal } from './deleteModal'
+export { UpdateModal } from './updateModal'
