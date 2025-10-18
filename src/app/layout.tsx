@@ -1,13 +1,13 @@
-import './globals.css';
-import { Inter } from 'next/font/google';
-import type { Metadata } from 'next';
-import { Toaster } from 'sonner';
+import "./globals.css";
+import { Inter } from "next/font/google";
+import type { Metadata } from "next";
+import { Toaster } from "sonner";
 
-const inter = Inter({ subsets: ['latin'] })
+const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: 'Fridge Application',
-  description: 'Created by Thanuka Perera',
+  title: "Fridge Application",
+  description: "Created by Thanuka Perera",
 };
 
 export default function RootLayout({
@@ -16,7 +16,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang='en'>
+    <html lang="en">
       <body
         className={`${inter.className} antialiased bg-[#F4FAFF] m-0 p-0 min-h-screen `}
       >
@@ -29,8 +29,7 @@ export default function RootLayout({
           {children}
         </div>
 
-        <Toaster position='top-right' richColors={true} />
-        
+        <Toaster position="top-right" richColors={true} />
       </body>
     </html>
   );

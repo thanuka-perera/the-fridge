@@ -1,78 +1,62 @@
-'use client'
+"use client";
 
-import { Button } from '@/components';
-import { ConfirmDeleteProps } from '@/util'
-import { FC, useState, useEffect, useRef, useCallback } from 'react'
-import { Loader, Trash2 } from 'lucide-react'
+import { Button } from "@/components";
+import { ConfirmDeleteProps } from "@/util";
+import { FC, useState, useEffect, useCallback } from "react";
+import { Loader, Trash2 } from "lucide-react";
 
 export const DeleteModal: FC<ConfirmDeleteProps> = ({
   itemToDelete,
   onConfirm,
   onClose,
 }: ConfirmDeleteProps) => {
-
   const [loading, setLoading] = useState<boolean>(false);
-  const modalRef = useRef<HTMLDivElement>(null);
 
-  const handleDelete = useCallback(async (e?: React.FormEvent) => {
-    e?.preventDefault();
+  const handleDelete = useCallback(
+    async (e?: React.FormEvent) => {
+      e?.preventDefault();
 
-    setLoading(true);
-    await onConfirm();
-    setLoading(false);
+      setLoading(true);
+      await onConfirm();
+      setLoading(false);
 
-    onClose();
-  },[onConfirm,onClose])
+      onClose();
+    },
+    [onConfirm, onClose]
+  );
 
   useEffect(() => {
     const handleKeyPress = (e: KeyboardEvent) => {
-      if (e.key === 'Enter') {
+      if (e.key === "Enter") {
         e.preventDefault();
         handleDelete();
-      }
-      else if (e.key === ' ' || e.key === 'Escape') {
+      } else if (e.key === " " || e.key === "Escape") {
         e.preventDefault();
-        onClose();
-      }
-    }
-    document.addEventListener('keydown', handleKeyPress);
-    return () => document.removeEventListener('keydown', handleKeyPress);
-  }, [handleDelete,onClose])
-
-  useEffect(() => {
-    const handleClickOutside = (e: MouseEvent) => {
-      if (modalRef.current && !modalRef.current.contains(e.target as Node)) {
         onClose();
       }
     };
-
-    document.addEventListener('mousedown', handleClickOutside);
-    return () => document.removeEventListener('mousedown', handleClickOutside);
-  }, [onClose]);
+    document.addEventListener("keydown", handleKeyPress);
+    return () => document.removeEventListener("keydown", handleKeyPress);
+  }, [handleDelete, onClose]);
 
   return (
-
-    <div className='fixed inset-0 z-50 flex items-center justify-center bg-black/50'>
-
-      <div className='bg-white rounded-2xl shadow-lg w-96 p-6 relative' ref={modalRef}>
-        <div className='flex flex-col items-center gap-4'>
-          <Trash2
-            className='text-red-500'
-            size={36}
-          />
-          <h2 className='text-lg font-bold text-gray-800'>
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50">
+      <div className="bg-white rounded-2xl shadow-lg w-96 p-6 relative">
+        <div className="flex flex-col items-center gap-4">
+          <Trash2 className="text-red-500" size={36} />
+          <h2 className="text-lg font-bold text-gray-800">
             Delete &quot;{itemToDelete.title}&quot;?
           </h2>
-          <div className='text-sm text-gray-500 text-center'>
-            This action is irreversible. Are you sure you want to delete this item from your fridge?
+          <div className="text-sm text-gray-500 text-center">
+            This action is irreversible. Are you sure you want to delete this
+            item from your fridge?
           </div>
 
-          <div className='flex items-center justify-center gap-12 mt-4 w-full'>
-
+          <div className="flex items-center justify-center gap-12 mt-4 w-full">
             <Button
-              buttonText='Cancel'
+              buttonText="Cancel"
               onClick={onClose}
-              classname='flex-1 border border-gray-300 bg-white text-gray-700 hover:bg-gray-50'
+              classname="flex-1 border border-gray-300 bg-white text-gray-700 hover:bg-gray-50"
             />
 
             <Button
@@ -83,19 +67,17 @@ export const DeleteModal: FC<ConfirmDeleteProps> = ({
                     <Loader className="animate-spin w-4 h-4" />
                   </>
                 ) : (
-                  'Delete Item'
+                  "Delete Item"
                 )
               }
               onClick={handleDelete}
-
-              classname={`flex gap-2 items-center bg-red-500 text-white hover:bg-red-600 ${loading ? 'opacity-50 cursor-not-allowed' : ''}`}
+              classname={`flex gap-2 items-center bg-red-500 text-white hover:bg-red-600 ${
+                loading ? "opacity-50 cursor-not-allowed" : ""
+              }`}
             />
-
           </div>
         </div>
       </div>
-
     </div>
-  )
-
-}
+  );
+};
