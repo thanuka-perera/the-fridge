@@ -1,0 +1,1 @@
+export type { DisplayItemsProps } from './displayItemsProps';
